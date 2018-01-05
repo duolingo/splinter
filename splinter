@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+# Splinter v1.0.0
+# https://github.com/artnc/splinter
+
+set -efu
+
+main() {
+  # Collect arguments
+  local -r rules_file="$1"
+  shift
+  local -r src_files=("$@")
+
+  # Parse rule file
+  local expecting_rule_message=true
+  local messages=()
+  local regexes=()
+  while read -r line; do
+    if [[ $line =~ ^\ *$ ]]; then
+      # Line contains no non-space chars
+      :
+    elif [[ $line =~ ^# ]]; then
+      # Line is a comment
+      :
+    elif [ "$expecting_rule_message" = true ]; then
+      # Line is a rule message
+      messages+=("$line")
+      expecting_rule_message=false
+    else
+      # Line is a rule regex
+      regexes+=("$line")
+      expecting_rule_message=true
+    fi
+  done < "$rules_file"
+
+  # Loop through source files
+  local found_violations=false
+  local src
+  local match
+  for src_file in "${src_files[@]}"; do
+    src=$(<"$src_file")
+
+    # Loop through rules
+    for i in "${!messages[@]}"; do
+      match=$(echo "$src" | grep -nE "${regexes[$i]}" || echo '')
+
+      # Print violation if found
+      if [[ ! -z "$match" ]]; then
+        echo "$match" \
+          | cut -d: -f1 \
+          | tr '\n' '\0' \
+          | xargs -0 -I 'LINENO' echo "${src_file}:LINENO:${messages[$i]}"
+        found_violations=true
+      fi
+    done
+  done
+
+  # Exit with error code if violations found
+  if [ "$found_violations" = true ]; then
+    exit 1
+  fi
+}
+
+main "$@"
