@@ -1,15 +1,23 @@
 #!/usr/bin/env bash
-
-# Splinter v1.0.0
-# https://github.com/artnc/splinter
+# Splinter (https://github.com/artnc/splinter)
 
 set -efu
+
+VERSION='1.1.0'
 
 main() {
   # Collect arguments
   local -r rules_file="$1"
   shift
   local -r src_files=("$@")
+
+  # Show help message and version number if requested
+  if [[ "$rules_file" == '-h' || "$rules_file" == '--help' ]]; then
+    echo 'Splinter is a simple, pattern-based linter.'
+    echo 'See usage instructions at https://github.com/artnc/splinter'
+    echo "Version: $VERSION"
+    exit 0
+  fi
 
   # Parse rule file
   local expecting_rule_message=true
