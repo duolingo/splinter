@@ -20,7 +20,11 @@ message/regex pairs.
 
 ## Usage
 
-1. Copy-paste `splinter` into your project.
+1. Copy-paste `splinter` into your project and make it executable:
+
+    ```bash
+    chmod +x splinter
+    ```
 1. Create a rule file named something like `rules.txt`:
 
     ```text
@@ -40,7 +44,7 @@ message/regex pairs.
     # Pass as arguments the rule file followed by your source files
     ./splinter rules.txt index.js src/*.js
     ```
-1. See the output! The exit code will be 1 if violations are found.
+1. See the output! The exit code will be 1 if violations are found - useful for CI.
 
     ```text
     index.js:25:Remove trailing whitespace
