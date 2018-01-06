@@ -38,11 +38,11 @@ message/regex pairs.
     Use `assert.strictEqual()` instead of `assert.equal()`
     assert\.equal
     ```
-1. Run Splinter on your code. If you need to specify many source files, [wildcards](https://ryanstutorials.net/linuxtutorial/wildcards.php) can help.
+1. Run Splinter on your code. If you need to specify many source paths, [wildcards](https://ryanstutorials.net/linuxtutorial/wildcards.php) can help.
 
     ```bash
-    # Pass as arguments the rule file followed by your source files
-    ./splinter rules.txt index.js src/*.js
+    # Pass as arguments the rule file followed by your source files/directories
+    ./splinter rules.txt index.js src
     ```
 1. See the output! The exit code will be 1 if violations are found - useful for CI.
 

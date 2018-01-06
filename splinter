@@ -3,13 +3,13 @@
 
 set -efu
 
-VERSION='1.1.0'
+VERSION='1.2.0'
 
 main() {
   # Collect arguments
   local -r rules_file="$1"
   shift
-  local -r src_files=("$@")
+  local -r src_paths=("$@")
 
   # Show help message and version number if requested
   if [[ "$rules_file" == '-h' || "$rules_file" == '--help' ]]; then
@@ -41,26 +41,31 @@ main() {
     fi
   done < "$rules_file"
 
-  # Loop through source files
+  # Loop through source paths (either files or directories)
   local found_violations=false
-  local src
-  local match
-  for src_file in "${src_files[@]}"; do
-    src=$(<"$src_file")
+  local src_path
+  for src_path in "${src_paths[@]}"; do
+    # Loop through source files
+    local src_file
+    while read -r src_file; do
+      local src
+      src=$(<"$src_file")
 
-    # Loop through rules
-    for i in "${!messages[@]}"; do
-      match=$(echo "$src" | grep -nE "${regexes[$i]}" || echo '')
+      # Loop through rules
+      for i in "${!messages[@]}"; do
+        local match
+        match=$(echo "$src" | grep -nE "${regexes[$i]}" || echo '')
 
-      # Print violation if found
-      if [[ ! -z "$match" ]]; then
-        echo "$match" \
-          | cut -d: -f1 \
-          | tr '\n' '\0' \
-          | xargs -0 -I 'LINENO' echo "${src_file}:LINENO:${messages[$i]}"
-        found_violations=true
-      fi
-    done
+        # Print violation if found
+        if [[ ! -z "$match" ]]; then
+          echo "$match" \
+            | cut -d: -f1 \
+            | tr '\n' '\0' \
+            | xargs -0 -I 'LINENO' echo "${src_file}:LINENO:${messages[$i]}"
+          found_violations=true
+        fi
+      done
+    done < <(find "$src_path" -type f | sort)
   done
 
   # Exit with error code if violations found
