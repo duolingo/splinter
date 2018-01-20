@@ -3,7 +3,7 @@
 
 set -efu
 
-VERSION='1.2.0'
+VERSION='1.3.0'
 
 main() {
   # Collect arguments
@@ -41,35 +41,22 @@ main() {
     fi
   done < "$rules_file"
 
-  # Loop through source paths (either files or directories)
-  local found_violations=false
-  local src_path
-  for src_path in "${src_paths[@]}"; do
-    # Loop through source files
-    local src_file
-    while read -r src_file; do
-      local src
-      src=$(<"$src_file")
-
-      # Loop through rules
-      for i in "${!messages[@]}"; do
-        local match
-        match=$(echo "$src" | grep -nE "${regexes[$i]}" || echo '')
-
-        # Print violation if found
-        if [[ ! -z "$match" ]]; then
-          echo "$match" \
-            | cut -d: -f1 \
-            | tr '\n' '\0' \
-            | xargs -0 -I 'LINENO' echo "${src_file}:LINENO:${messages[$i]}"
-          found_violations=true
-        fi
-      done
-    done < <(find "$src_path" -type f | sort)
+  # Find violations
+  local violations=''
+  local i
+  for i in "${!regexes[@]}"; do
+    local matches
+    matches="$(grep -EHInr "${regexes[$i]}" "${src_paths[@]}" || echo)"
+    if [ -n "$matches" ]; then
+      violations+="$(
+        echo "$matches" | cut -d: -f-2 | sed "s#\$#:${messages[$i]}#g" \
+      )"$'\n'
+    fi
   done
 
-  # Exit with error code if violations found
-  if [ "$found_violations" = true ]; then
+  # Print report and exit with error code if violations found
+  if [ -n "$violations" ]; then
+    echo -n "$violations" | sort -t: -k1,1 -k2,2n
     exit 1
   fi
 }
