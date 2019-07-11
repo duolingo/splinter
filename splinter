@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Splinter (https://github.com/artnc/splinter)
+# Splinter (https://github.com/duolingo/splinter)
 
 set -efu
 
