@@ -52,3 +52,5 @@ message/regex pairs.
     index.js:26:Remove trailing whitespace
     src/foobar.test.js:130:Use `assert.strictEqual()` instead of `assert.equal()`
     ```
+
+_Duolingo is hiring! Apply at https://www.duolingo.com/careers_
