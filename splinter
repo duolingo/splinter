@@ -6,6 +6,12 @@ set -efu
 VERSION='1.3.0'
 
 main() {
+
+  if [ $# -eq 0 ]; then
+      echo 'Splinter requires a rules file to be passed in. See splinter --help'
+      exit 0
+  fi
+
   # Collect arguments
   local -r rules_file="$1"
   shift
