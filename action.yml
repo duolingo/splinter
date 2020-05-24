@@ -1,0 +1,16 @@
+name: 'Splinter'
+description: 'Simple pattern-based linter'
+inputs:
+  rules_file:
+    description: 'Rules file path'
+    required: true
+    default: '.splinter'
+  src_paths:
+    description: 'List of files/directories to lint'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.rules_file }}
+    - ${{ inputs.src_paths }}
