@@ -3,7 +3,7 @@
 
 set -efu
 
-VERSION='1.3.0'
+VERSION='1.3.1'
 
 main() {
   # Collect arguments
@@ -14,7 +14,7 @@ main() {
   # Show help message and version number if requested
   if [[ "$rules_file" == '-h' || "$rules_file" == '--help' ]]; then
     echo 'Splinter is a simple, pattern-based linter.'
-    echo 'See usage instructions at https://github.com/artnc/splinter'
+    echo 'See usage instructions at https://github.com/duolingo/splinter'
     echo "Version: $VERSION"
     exit 0
   fi
