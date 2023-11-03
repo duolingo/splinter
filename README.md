@@ -14,7 +14,7 @@ on any Unix.
 
 Define your rules in
 <br>
-a file as a list of
+a text file as a list of
 <br>
 message/regex pairs.
 
@@ -52,5 +52,19 @@ message/regex pairs.
     index.js:26:Remove trailing whitespace
     src/foobar.test.js:130:Use `assert.strictEqual()` instead of `assert.equal()`
     ```
+
+### Running with pre-commit
+
+You can also set up this repo as a [pre-commit hook](https://pre-commit.com/). For example:
+
+```yaml
+  - repo: https://github.com/duolingo/splinter.git
+    rev: 1.3.1
+    hooks:
+      - id: splinter
+        args:
+          - config/splinter-rules-py.txt
+        files: \.py$
+```
 
 _Duolingo is hiring! Apply at https://www.duolingo.com/careers_
