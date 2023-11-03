@@ -14,7 +14,7 @@ on any Unix.
 
 Define your rules in
 <br>
-a file as a list of
+a text file as a list of
 <br>
 message/regex pairs.
 
