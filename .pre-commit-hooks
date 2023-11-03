@@ -1,0 +1,5 @@
+- id: splinter
+  name: Splinter
+  entry: ./splinter
+  language: script
+  description: Simple pattern-based linter
