@@ -46,11 +46,16 @@ main() {
   local i
   for i in "${!regexes[@]}"; do
     local matches
-    matches="$(grep -EHInr "${regexes[$i]}" "${src_paths[@]}" || echo)"
+    local should_ignore
+    matches="$(grep -EHInr "${regexes[$i]}" "$PWD/${src_paths[@]}" || echo)"
+
     if [ -n "$matches" ]; then
-      violations+="$(
-        echo "$matches" | cut -d: -f-2 | sed "s#\$#:${messages[$i]}#g" \
-      )"$'\n'
+      while IFS= read -r match; do
+        if ! echo "$match" | grep -q "splinter:ignore"; then
+          violation=$(echo "$match" | cut -d: -f-2 | sed "s#\$#:${messages[$i]}#g")
+          violations+="$violation"$'\n'
+        fi
+      done < <(echo "$matches")
     fi
   done
 
