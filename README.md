@@ -53,6 +53,8 @@ message/regex pairs.
     src/foobar.test.js:130:Use `assert.strictEqual()` instead of `assert.equal()`
     ```
 
+Splinter will ignore violations on any line of code that contains `splinter:ignore` in a comment.
+
 ### Running with pre-commit
 
 You can also set up this repo as a [pre-commit hook](https://pre-commit.com/). For example:
