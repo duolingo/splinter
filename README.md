@@ -64,7 +64,7 @@ You can also set up this repo as a [pre-commit hook](https://pre-commit.com/). F
 
 ```yaml
 - repo: https://github.com/duolingo/splinter.git
-  rev: 1.3.1
+  rev: 1.4.0
   hooks:
     - id: splinter
       args:
