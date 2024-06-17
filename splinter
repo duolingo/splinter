@@ -5,7 +5,7 @@ set -efu
 
 # Collect arguments
 readonly rules_file="${1:-}"
-if [[ -z "${rules_file}" || "${rules_file}" == '-h' || "${rules_file}" == '--help' ]]; then
+if [[ -z ${rules_file} || ${rules_file} == '-h' || ${rules_file} == '--help' ]]; then
   echo 'Splinter is a simple, pattern-based linter: https://github.com/duolingo/splinter'
   exit 1
 fi
@@ -23,7 +23,7 @@ while read -r line; do
   elif [[ ${line} =~ ^# ]]; then
     # Line is a comment
     :
-  elif [[ "${expecting_rule_message}" = true ]]; then
+  elif [[ ${expecting_rule_message} == true ]]; then
     # Line is a rule message
     messages+=("${line}")
     expecting_rule_message=false
@@ -38,7 +38,7 @@ done < "${rules_file}"
 violations=''
 for i in "${!regexes[@]}"; do
   matches="$(grep -EHInr "${regexes[$i]}" "${src_paths[@]}" | grep -Fv 'splinter:ignore' || true)"
-  if [[ -n "${matches}" ]]; then
+  if [[ -n ${matches} ]]; then
     violations+="$(
       echo "${matches}" | cut -d: -f-2 | sed s$'\001''$'$'\001'":${messages[$i]}"$'\001'g
     )"$'\n'
@@ -46,7 +46,7 @@ for i in "${!regexes[@]}"; do
 done
 
 # Print report and exit with error code if violations found
-if [[ -n "${violations}" ]]; then
+if [[ -n ${violations} ]]; then
   echo -n "${violations}" | sort -t: -k1,1 -k2,2n
   exit 1
 fi
