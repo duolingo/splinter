@@ -10,7 +10,7 @@ if [[ -z ${rules_file} || ${rules_file} == '-h' || ${rules_file} == '--help' ]];
   exit 1
 fi
 shift
-readonly src_paths=("${@}")
+readonly src_paths=("${@:-.}")
 
 # Parse rule file
 expecting_rule_message=true
