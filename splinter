@@ -17,11 +17,8 @@ expecting_rule_message=true
 messages=()
 regexes=()
 while read -r line; do
-  if [[ ${line} =~ ^\ *$ ]]; then
-    # Line contains no non-space chars
-    :
-  elif [[ ${line} =~ ^# ]]; then
-    # Line is a comment
+  if [[ ${line} =~ ^\ *$ || ${line} =~ ^# ]]; then
+    # Line contains no non-space chars or is a comment
     :
   elif [[ ${expecting_rule_message} == true ]]; then
     # Line is a rule message
