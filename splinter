@@ -5,15 +5,13 @@ set -efu
 
 main() {
   # Collect arguments
-  local -r rules_file="$1"
+  local -r rules_file="${1:-}"
+  if [[ -z "$rules_file" || "$rules_file" == '-h' || "$rules_file" == '--help' ]]; then
+    echo 'Splinter is a simple, pattern-based linter: https://github.com/duolingo/splinter'
+    exit 1
+  fi
   shift
   local -r src_paths=("$@")
-
-  # Show help message if requested
-  if [[ "$rules_file" == '-h' || "$rules_file" == '--help' ]]; then
-    echo 'Splinter is a simple, pattern-based linter: https://github.com/duolingo/splinter'
-    exit 0
-  fi
 
   # Parse rule file
   local expecting_rule_message=true
