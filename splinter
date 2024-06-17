@@ -49,7 +49,7 @@ main() {
     matches="$(grep -EHInr "${regexes[$i]}" "${src_paths[@]}" | grep -Fv 'splinter:ignore' || true)"
     if [ -n "$matches" ]; then
       violations+="$(
-        echo "$matches" | cut -d: -f-2 | sed "s#\$#:${messages[$i]}#g" \
+        echo "$matches" | cut -d: -f-2 | sed s$'\001''$'$'\001'":${messages[$i]}"$'\001'g
       )"$'\n'
     fi
   done
