@@ -3,6 +3,6 @@ owner:
   team: "668bc57576f2100741fd659870fa0000" # Language Learning - Language Learning - Personalization Foundations
 technology-type: [internal-tool]
 lifecycle:
-  state: production
-  context: ""
+  state: frozen
+  context: "Pattern-based linter; no human commits since 2023 and no deploy path."
 compliance: []
